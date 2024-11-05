@@ -6,7 +6,7 @@ public class BallController : MonoBehaviour
     private Rigidbody2D rb;
     private CircleCollider2D cl;
     private Vector2 startPoint;
-    private Vector2 forceDirection;
+    public Vector2 forceDirection;
     private float forceMultiplier = 10f;
     private float minVelocity = 2.5f;
     private float maxVelocity = 15f;
