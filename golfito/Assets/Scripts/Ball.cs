@@ -140,6 +140,7 @@ public class BallController : MonoBehaviour
             if (distanceBetweenCenters + ballRadius <= porteriaRadius)
             {
                 rb.velocity = Vector2.zero; // Detener la bola
+                GameManager.Instance.LoadNextLevel();
             }
         }
     }

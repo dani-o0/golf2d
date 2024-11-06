@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Porteria
   - Bola
+  - GameManager
   layers:
   - Default
   - TransparentFX

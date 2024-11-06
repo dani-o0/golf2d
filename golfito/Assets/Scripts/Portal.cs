@@ -3,37 +3,66 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-    [SerializeField] private Transform linkedPortal; // El otro portal al que teletransportará
-    [SerializeField] private float cooldownTime = 1.0f; // Tiempo de espera para evitar bucles
-
+    public enum Direction
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    }
+    
+    [SerializeField] private GameObject linkedPortalObject; // El otro portal al que teletransportará
+    [SerializeField] private float cooldownTime = 1f; // Tiempo de espera entre teletransportes (en segundos)
+    [SerializeField] private Direction impulseDirection; // Selección de dirección desde el Inspector
     private bool isOnCooldown = false; // Indica si el portal está en cooldown
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        // Verifica si el objeto que entra en el portal es la bola
-        if (collider.CompareTag("Bola") && !isOnCooldown)
+        if (isOnCooldown && collider.CompareTag("Bola"))
         {
-            // Teletransporta la bola al portal vinculado
-            Rigidbody2D ballRb = collider.GetComponent<Rigidbody2D>();
+            StartCoroutine(CooldownCoroutine());
+        }
+        
+        if (isOnCooldown || !collider.CompareTag("Bola"))
+            return;
 
-            if (ballRb != null && linkedPortal != null)
-            {
-                StartCoroutine(TeleportBall(ballRb));
-            }
+        // Teletransporta la bola
+        Rigidbody2D ballRb = collider.GetComponent<Rigidbody2D>();
+        if (ballRb != null && linkedPortalObject != null)
+        {
+            TeleportBall(ballRb);
         }
     }
 
-    private IEnumerator TeleportBall(Rigidbody2D ballRb)
+    private void TeleportBall(Rigidbody2D ballRb)
     {
-        isOnCooldown = true; // Activa el cooldown para este portal
-        ballRb.position = linkedPortal.position; // Teletransporta la bola al portal vinculado
+        ballRb.position = linkedPortalObject.transform.position; // Teletransporta la bola
+        Vector2 direction = GetImpulseDirection(impulseDirection);
+        ballRb.velocity += direction * Time.deltaTime;
+        linkedPortalObject.GetComponent<Portal>().isOnCooldown = true; // Activa el cooldown
+    }
 
-        // Opcional: Ajusta la velocidad de la bola después de teletransportarse
-        ballRb.velocity = ballRb.velocity * 0.8f; // Reduce un poco la velocidad al salir
-
+    private IEnumerator CooldownCoroutine()
+    {
+        // Espera el tiempo del cooldown
         yield return new WaitForSeconds(cooldownTime);
-
-        // Desactiva el cooldown para permitir nuevos teletransportes
-        isOnCooldown = false;
+        isOnCooldown = false; // Termina el cooldown
+    }
+    
+    private Vector2 GetImpulseDirection(Direction selectedDirection)
+    {
+        switch (selectedDirection)
+        {
+            case Direction.Up:
+                return new Vector2(0, 1);
+            case Direction.Down:
+                return new Vector2(0, -1);
+            case Direction.Left:
+                return new Vector2(-1, 0);
+            case Direction.Right:
+                return new Vector2(1, 0);
+            default:
+                return Vector2.zero; // Por defecto, sin impulso
+        }
     }
 }
