@@ -7,6 +7,8 @@ TagManager:
   - Porteria
   - Bola
   - GameManager
+  - Username
+  - Scoreboard
   layers:
   - Default
   - TransparentFX

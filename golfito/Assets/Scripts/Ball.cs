@@ -123,6 +123,9 @@ public class BallController : MonoBehaviour
         rb.AddForce(force, ForceMode2D.Impulse);
         lineRenderer.enabled = false; // Desactiva el LineRenderer después de soltar
         previewLineRenderer.enabled = false; // Desactiva la línea de previsualización
+        
+        // Decimos al GameManager que la bola ha sido lanzada
+        GameManager.Instance.ThrowedBall();
     }
 
     private void OnTriggerStay2D(Collider2D collider)

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "29730033617",
+    "project_id": "golfito-ab3c1",
+    "storage_bucket": "golfito-ab3c1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29730033617:android:f0a8a6c2b221c2b41d1af0",
+        "android_client_info": {
+          "package_name": "com.daniof.golfito"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqNiyjM3BpJsk_14Rx19AHkKCfY_gxo7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,22 +3,16 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-    public enum Direction
-    {
-        Up,
-        Down,
-        Left,
-        Right
-    }
-    
     [SerializeField] private GameObject linkedPortalObject; // El otro portal al que teletransportará
     [SerializeField] private float cooldownTime = 1f; // Tiempo de espera entre teletransportes (en segundos)
     private bool isOnCooldown = false; // Indica si el portal está en cooldow
-
+    
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        // Obtenemos el objeto que ha colisionado con el portal
         Rigidbody2D ballRb = collider.GetComponent<Rigidbody2D>();
-
+        
+        // Comprobacion del coldown para dar un marjen para que salga la bola del portal y que no se teletransporte otra vez
         if (isOnCooldown && collider.CompareTag("Bola"))
         {
             StartCoroutine(CooldownCoroutine());
@@ -34,11 +28,14 @@ public class Portal : MonoBehaviour
         }
     }
 
+    // Metodo para teletransportar la bola hacia el portal
     private void TeleportBall(Rigidbody2D ballRb)
     {
-        ballRb.position = linkedPortalObject.transform.position; // Teletransporta la bola
+        // Cambiamos la posicion de la bola a la del portal
+        ballRb.position = linkedPortalObject.transform.position;
         Portal linkedPortal = linkedPortalObject.GetComponent<Portal>();
-        linkedPortal.isOnCooldown = true; // Activa el cooldown
+        // Activamos el cooldown
+        linkedPortal.isOnCooldown = true;
     }
 
     private IEnumerator CooldownCoroutine()
